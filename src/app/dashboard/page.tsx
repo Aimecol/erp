@@ -27,6 +27,7 @@ import { InventoryTrendsChart } from '@/components/charts/inventory-trends-chart
 import { RecentActivity, mockRecentActivities } from '@/components/dashcards/recent-activity';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
+import { AlertTriangle } from 'lucide-react';
 import { MainLayout } from '@/components/layout/main-layout';
 import { ProtectedRoute } from '@/components/auth/auth-provider';
 import { api } from '@/lib/api';
