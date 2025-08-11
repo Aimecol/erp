@@ -15,7 +15,7 @@ import {
   faShield
 } from '@fortawesome/free-solid-svg-icons';
 import { Button } from '@/components/ui/button';
-import { ThemeToggle } from '@/components/ui/theme-toggle';
+import { ThemeToggle } from '@/components/theme/theme-toggle';
 
 export function LandingNavigation() {
   const [isOpen, setIsOpen] = useState(false);

@@ -5,7 +5,7 @@ import './landing.css';
 import Link from 'next/link';
 import { motion, useScroll, useTransform, useInView } from 'framer-motion';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { useTheme } from '@/components/ui/theme-toggle';
+import { useTheme } from '@/hooks/use-theme';
 import {
   faArrowRight,
   faChartBar,
@@ -168,43 +168,43 @@ export default function LandingPage() {
     const baseFeatures = [
       {
         icon: faChartBar,
-        title: theme === 'light' ? "Comprehensive Dashboard" : "AI-Powered Analytics",
-        description: theme === 'light'
+        title: effectiveTheme === 'light' ? "Comprehensive Dashboard" : "AI-Powered Analytics",
+        description: effectiveTheme === 'light'
           ? "12 KPI cards and 5 interactive charts providing real-time insights into institutional performance with beautiful visualizations."
           : "Advanced machine learning algorithms analyze institutional data to provide predictive insights and automated recommendations."
       },
       {
         icon: faDollarSign,
-        title: theme === 'light' ? "Financial Management (RWF)" : "Smart Financial Operations",
-        description: theme === 'light'
+        title: effectiveTheme === 'light' ? "Financial Management (RWF)" : "Smart Financial Operations",
+        description: effectiveTheme === 'light'
           ? "Complete financial operations in Rwandan Francs including fee collection, budgeting, accounting, and compliance reporting."
           : "AI-driven financial forecasting and automated transaction processing with blockchain-secured RWF operations."
       },
       {
         icon: faGraduationCap,
-        title: theme === 'light' ? "Academic Administration" : "Intelligent Academic System",
-        description: theme === 'light'
+        title: effectiveTheme === 'light' ? "Academic Administration" : "Intelligent Academic System",
+        description: effectiveTheme === 'light'
           ? "Student enrollment, program management, performance tracking, and academic calendar with comprehensive reporting."
           : "Machine learning-powered student success prediction, automated scheduling, and personalized learning path recommendations."
       },
       {
         icon: faUsers,
-        title: theme === 'light' ? "Human Resources" : "Digital Workforce Management",
-        description: theme === 'light'
+        title: effectiveTheme === 'light' ? "Human Resources" : "Digital Workforce Management",
+        description: effectiveTheme === 'light'
           ? "Staff management, payroll processing, benefits administration, and performance tracking for institutional excellence."
           : "AI-enhanced talent management with predictive performance analytics and automated workflow optimization."
       },
       {
         icon: faShield,
-        title: theme === 'light' ? "Role-Based Security" : "Advanced Cybersecurity",
-        description: theme === 'light'
+        title: effectiveTheme === 'light' ? "Role-Based Security" : "Advanced Cybersecurity",
+        description: effectiveTheme === 'light'
           ? "Advanced permission system with roles for Admin, Bursar, Store Manager, Academic Staff, and Auditor access control."
           : "Zero-trust security architecture with biometric authentication, behavioral analysis, and quantum-encrypted data protection."
       },
       {
         icon: faGlobe,
-        title: theme === 'light' ? "Rwandan Localization" : "Global Digital Integration",
-        description: theme === 'light'
+        title: effectiveTheme === 'light' ? "Rwandan Localization" : "Global Digital Integration",
+        description: effectiveTheme === 'light'
           ? "Built specifically for Rwanda with RWF currency, Africa/Kigali timezone, and local compliance requirements."
           : "Seamless integration with global educational networks while maintaining local compliance and cultural adaptation."
       }
@@ -264,11 +264,20 @@ export default function LandingPage() {
     }
   };
 
-  const currentContent = themeContent[theme] || themeContent.light;
+  // Get the effective theme (resolve 'system' to actual theme)
+  const getEffectiveTheme = () => {
+    if (theme === 'system') {
+      return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+    }
+    return theme;
+  };
+
+  const effectiveTheme = getEffectiveTheme();
+  const currentContent = themeContent[effectiveTheme] || themeContent.light;
 
   return (
     <div className={`min-h-screen overflow-hidden transition-all duration-1000 ${
-      theme === 'light'
+      effectiveTheme === 'light'
         ? 'bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100'
         : 'bg-gradient-to-br from-gray-900 via-purple-900 to-cyan-900'
     }`}>
@@ -278,13 +287,13 @@ export default function LandingPage() {
       <section className="relative min-h-[85vh] flex items-center justify-center px-4 py-12">
         <motion.div style={{ y, opacity }} className="absolute inset-0 z-0">
           <div className={`absolute top-16 left-16 w-56 h-56 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob transition-all duration-1000 ${
-            theme === 'light' ? 'bg-blue-300' : 'bg-cyan-400 dark:opacity-40'
+            effectiveTheme === 'light' ? 'bg-blue-300' : 'bg-cyan-400 dark:opacity-40'
           }`}></div>
           <div className={`absolute top-32 right-16 w-56 h-56 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob animation-delay-2000 transition-all duration-1000 ${
-            theme === 'light' ? 'bg-purple-300' : 'bg-purple-400 dark:opacity-40'
+            effectiveTheme === 'light' ? 'bg-purple-300' : 'bg-purple-400 dark:opacity-40'
           }`}></div>
           <div className={`absolute bottom-16 left-32 w-56 h-56 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob animation-delay-4000 transition-all duration-1000 ${
-            theme === 'light' ? 'bg-pink-300' : 'bg-pink-400 dark:opacity-40'
+            effectiveTheme === 'light' ? 'bg-pink-300' : 'bg-pink-400 dark:opacity-40'
           }`}></div>
         </motion.div>
 
@@ -312,7 +321,7 @@ export default function LandingPage() {
               transition={{ delay: 0.3 }}
               className="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-bold text-gray-900 dark:text-white mb-4 leading-tight"
             >
-              {theme === 'light' ? (
+              {effectiveTheme === 'light' ? (
                 <>
                   INES-Ruhengeri
                   <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent block">
@@ -345,7 +354,7 @@ export default function LandingPage() {
               className="flex flex-col sm:flex-row gap-3 justify-center lg:justify-start"
             >
               <Link href="/login">
-                <Button size="lg" className={`${theme === 'light'
+                <Button size="lg" className={`${effectiveTheme === 'light'
                   ? 'bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700'
                   : 'bg-gradient-to-r from-cyan-500 to-purple-500 hover:from-cyan-600 hover:to-purple-600'
                 } text-white px-6 py-3 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 group`}>
@@ -458,7 +467,7 @@ export default function LandingPage() {
             className="text-center mb-12"
           >
             <h2 className="text-3xl lg:text-4xl font-bold text-gray-900 dark:text-white mb-4">
-              {theme === 'light' ? (
+              {effectiveTheme === 'light' ? (
                 <>
                   Powerful Features for
                   <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent block">
@@ -498,7 +507,7 @@ export default function LandingPage() {
 
       {/* Testimonials Section */}
       <section className={`py-20 transition-all duration-1000 ${
-        theme === 'light' ? 'bg-gray-50' : 'bg-gray-800'
+        effectiveTheme === 'light' ? 'bg-gray-50' : 'bg-gray-800'
       }`}>
         <div className="max-w-7xl mx-auto px-4">
           <motion.div
@@ -508,10 +517,10 @@ export default function LandingPage() {
             className="text-center mb-16"
           >
             <h2 className="text-4xl lg:text-5xl font-bold text-gray-900 dark:text-white mb-6">
-              {theme === 'light' ? 'Trusted by Educational Leaders' : 'Pioneering Digital Transformation'}
+              {effectiveTheme === 'light' ? 'Trusted by Educational Leaders' : 'Pioneering Digital Transformation'}
             </h2>
             <p className="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
-              {theme === 'light'
+              {effectiveTheme === 'light'
                 ? 'See what administrators and staff say about our ERP system.'
                 : 'Leading institutions share their digital transformation journey with our AI-powered platform.'
               }
