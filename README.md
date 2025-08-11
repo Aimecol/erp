@@ -1,3 +1,4 @@
+
 # �🇼 INES-Ruhengeri ERP System
 
 A **production-ready, comprehensive ERP system** specifically designed for **Institut d'Enseignement Supérieur de Ruhengeri (INES-Ruhengeri)** in Rwanda. Built with Next.js, TypeScript, and modern web technologies, this system provides complete institutional management capabilities with role-based access control, financial management, academic administration, and operational oversight.
