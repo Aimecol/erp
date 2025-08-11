@@ -15,6 +15,7 @@ import {
   faShield
 } from '@fortawesome/free-solid-svg-icons';
 import { Button } from '@/components/ui/button';
+import { ThemeToggle } from '@/components/ui/theme-toggle';
 
 export function LandingNavigation() {
   const [isOpen, setIsOpen] = useState(false);
@@ -80,8 +81,9 @@ export function LandingNavigation() {
             ))}
           </div>
 
-          {/* CTA Buttons */}
+          {/* Theme Toggle and CTA Buttons */}
           <div className="hidden md:flex items-center space-x-4">
+            <ThemeToggle />
             <Link href="/login">
               <Button variant="ghost" className="text-gray-700 hover:text-blue-600">
                 Sign In
@@ -132,6 +134,10 @@ export function LandingNavigation() {
               ))}
               
               <div className="pt-4 border-t border-gray-200 space-y-3">
+                <div className="flex items-center justify-between mb-3">
+                  <span className="text-sm font-medium text-gray-700">Theme</span>
+                  <ThemeToggle />
+                </div>
                 <Link href="/login" onClick={() => setIsOpen(false)}>
                   <Button variant="outline" className="w-full">
                     Sign In

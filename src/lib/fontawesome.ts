@@ -29,6 +29,15 @@ import {
   faMagic,
   faDatabase,
   faShield,
+  faSun,
+  faMoon,
+  faArrowTrendUp,
+  faMoneyBillWave,
+  faLaptop,
+  faPalette,
+  faBolt,
+  faGlobe,
+  faUniversity,
 } from '@fortawesome/free-solid-svg-icons';
 
 // Prevent FontAwesome from adding its CSS
@@ -61,6 +70,15 @@ library.add(
   faMagic,
   faDatabase,
   faShield,
+  faSun,
+  faMoon,
+  faArrowTrendUp,
+  faMoneyBillWave,
+  faLaptop,
+  faPalette,
+  faBolt,
+  faGlobe,
+  faUniversity,
 );
 
 export { library };

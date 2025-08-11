@@ -59,20 +59,20 @@ const Feature3DCard = ({
       animate={isInView ? { opacity: 1, y: 0, rotateX: 0 } : {}}
       transition={{ duration: 0.6, delay }}
       whileHover={{
-        scale: 1.05,
-        rotateY: 5,
-        boxShadow: "0 25px 50px -12px rgba(0, 0, 0, 0.25)"
+        scale: 1.02,
+        rotateY: 2,
+        boxShadow: "0 20px 40px -12px rgba(0, 0, 0, 0.25)"
       }}
       className="group perspective-1000"
     >
-      <Card className="h-full bg-gradient-to-br from-white to-gray-50 border-0 shadow-xl hover:shadow-2xl transition-all duration-300 transform-gpu">
-        <CardContent className="p-8">
-          <div className="mb-6">
-            <div className="w-16 h-16 bg-gradient-to-br from-blue-500 to-purple-600 rounded-2xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300">
-              <FontAwesomeIcon icon={icon} className="w-8 h-8 text-white" />
+      <Card className="h-full bg-gradient-to-br from-white to-gray-50 dark:from-gray-800 dark:to-gray-900 border-0 shadow-lg hover:shadow-xl transition-all duration-300 transform-gpu">
+        <CardContent className="p-6">
+          <div className="mb-4">
+            <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-purple-600 rounded-xl flex items-center justify-center mb-3 group-hover:scale-110 transition-transform duration-300">
+              <FontAwesomeIcon icon={icon} className="w-6 h-6 text-white" />
             </div>
-            <h3 className="text-xl font-bold text-gray-900 mb-3">{title}</h3>
-            <p className="text-gray-600 leading-relaxed">{description}</p>
+            <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-2">{title}</h3>
+            <p className="text-gray-600 dark:text-gray-300 leading-relaxed text-sm">{description}</p>
           </div>
         </CardContent>
       </Card>
@@ -202,18 +202,18 @@ export default function LandingPage() {
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 overflow-hidden">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 dark:from-gray-900 dark:via-gray-800 dark:to-blue-900 overflow-hidden">
       {/* Navigation */}
       <LandingNavigation />
       {/* Hero Section */}
-      <section className="relative min-h-screen flex items-center justify-center px-4">
+      <section className="relative min-h-[85vh] flex items-center justify-center px-4 py-12">
         <motion.div style={{ y, opacity }} className="absolute inset-0 z-0">
-          <div className="absolute top-20 left-20 w-72 h-72 bg-blue-300 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob"></div>
-          <div className="absolute top-40 right-20 w-72 h-72 bg-purple-300 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob animation-delay-2000"></div>
-          <div className="absolute bottom-20 left-40 w-72 h-72 bg-pink-300 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob animation-delay-4000"></div>
+          <div className="absolute top-16 left-16 w-56 h-56 bg-blue-300 dark:bg-blue-600 rounded-full mix-blend-multiply filter blur-xl opacity-70 dark:opacity-30 animate-blob"></div>
+          <div className="absolute top-32 right-16 w-56 h-56 bg-purple-300 dark:bg-purple-600 rounded-full mix-blend-multiply filter blur-xl opacity-70 dark:opacity-30 animate-blob animation-delay-2000"></div>
+          <div className="absolute bottom-16 left-32 w-56 h-56 bg-pink-300 dark:bg-pink-600 rounded-full mix-blend-multiply filter blur-xl opacity-70 dark:opacity-30 animate-blob animation-delay-4000"></div>
         </motion.div>
 
-        <div className="relative z-10 max-w-7xl mx-auto grid lg:grid-cols-2 gap-12 items-center">
+        <div className="relative z-10 max-w-6xl mx-auto grid lg:grid-cols-2 gap-8 lg:gap-12 items-center">
           {/* Left Content */}
           <motion.div
             initial={{ opacity: 0, x: -50 }}
@@ -225,9 +225,9 @@ export default function LandingPage() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.2 }}
-              className="inline-flex items-center px-4 py-2 bg-blue-100 text-blue-800 rounded-full text-sm font-medium mb-6"
+              className="inline-flex items-center px-3 py-1.5 bg-blue-100 dark:bg-blue-900/50 text-blue-800 dark:text-blue-200 rounded-full text-sm font-medium mb-4"
             >
-              <FontAwesomeIcon icon={faAward} className="w-4 h-4 mr-2" />
+              <FontAwesomeIcon icon={faAward} className="w-3 h-3 mr-2" />
               Institut d'Enseignement Supérieur de Ruhengeri
             </motion.div>
 
@@ -235,7 +235,7 @@ export default function LandingPage() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.3 }}
-              className="text-5xl lg:text-7xl font-bold text-gray-900 mb-6 leading-tight"
+              className="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-bold text-gray-900 dark:text-white mb-4 leading-tight"
             >
               INES-Ruhengeri
               <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent block">
@@ -247,9 +247,9 @@ export default function LandingPage() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.4 }}
-              className="text-xl text-gray-600 mb-8 leading-relaxed max-w-2xl"
+              className="text-lg text-gray-600 dark:text-gray-300 mb-6 leading-relaxed max-w-2xl"
             >
-              A comprehensive, production-ready ERP system designed specifically for Rwanda's leading higher education institution. 
+              A comprehensive, production-ready ERP system designed specifically for Rwanda's leading higher education institution.
               Manage academics, finances, HR, and operations with beautiful dashboards and RWF currency support.
             </motion.p>
 
@@ -257,16 +257,16 @@ export default function LandingPage() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.5 }}
-              className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start"
+              className="flex flex-col sm:flex-row gap-3 justify-center lg:justify-start"
             >
               <Link href="/login">
-                <Button size="lg" className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white px-8 py-4 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 group">
+                <Button size="lg" className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white px-6 py-3 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 group">
                   Access Dashboard
-                  <FontAwesomeIcon icon={faArrowRight} className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                  <FontAwesomeIcon icon={faArrowRight} className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" />
                 </Button>
               </Link>
-              <Button variant="outline" size="lg" className="px-8 py-4 rounded-xl border-2 hover:bg-gray-50 transition-all duration-300 group">
-                <FontAwesomeIcon icon={faPlay} className="mr-2 w-5 h-5" />
+              <Button variant="outline" size="lg" className="px-6 py-3 rounded-xl border-2 hover:bg-gray-50 dark:hover:bg-gray-800 transition-all duration-300 group">
+                <FontAwesomeIcon icon={faPlay} className="mr-2 w-4 h-4" />
                 Watch Demo
               </Button>
             </motion.div>
@@ -285,9 +285,9 @@ export default function LandingPage() {
       </section>
 
       {/* Stats Section */}
-      <section className="py-20 bg-white/50 backdrop-blur-sm">
-        <div className="max-w-7xl mx-auto px-4">
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-8">
+      <section className="py-12 bg-white/50 dark:bg-gray-900/50 backdrop-blur-sm">
+        <div className="max-w-5xl mx-auto px-4">
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
             {stats.map((stat, index) => (
               <motion.div
                 key={index}
@@ -297,11 +297,11 @@ export default function LandingPage() {
                 viewport={{ once: true }}
                 className="text-center group"
               >
-                <div className="w-16 h-16 bg-gradient-to-br from-blue-500 to-purple-600 rounded-2xl flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform duration-300">
-                  <FontAwesomeIcon icon={stat.icon} className="w-8 h-8 text-white" />
+                <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-purple-600 rounded-xl flex items-center justify-center mx-auto mb-3 group-hover:scale-110 transition-transform duration-300">
+                  <FontAwesomeIcon icon={stat.icon} className="w-6 h-6 text-white" />
                 </div>
-                <div className="text-3xl font-bold text-gray-900 mb-2">{stat.number}</div>
-                <div className="text-gray-600">{stat.label}</div>
+                <div className="text-2xl font-bold text-gray-900 dark:text-white mb-1">{stat.number}</div>
+                <div className="text-gray-600 dark:text-gray-400 text-sm">{stat.label}</div>
               </motion.div>
             ))}
           </div>
@@ -309,18 +309,18 @@ export default function LandingPage() {
       </section>
 
       {/* Demo Video Section */}
-      <section id="dashboard" className="py-20 bg-white">
-        <div className="max-w-6xl mx-auto px-4">
+      <section id="dashboard" className="py-16 bg-white dark:bg-gray-900">
+        <div className="max-w-5xl mx-auto px-4">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="text-center mb-12"
+            className="text-center mb-8"
           >
-            <h2 className="text-4xl lg:text-5xl font-bold text-gray-900 mb-6">
+            <h2 className="text-3xl lg:text-4xl font-bold text-gray-900 dark:text-white mb-4">
               See It In Action
             </h2>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+            <p className="text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
               Watch how INES-Ruhengeri ERP transforms institutional management with intuitive dashboards and powerful features.
             </p>
           </motion.div>
@@ -361,27 +361,27 @@ export default function LandingPage() {
       </section>
 
       {/* Features Section */}
-      <section id="features" className="py-20 px-4">
-        <div className="max-w-7xl mx-auto">
+      <section id="features" className="py-16 px-4 bg-gray-50 dark:bg-gray-800">
+        <div className="max-w-6xl mx-auto">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="text-center mb-16"
+            className="text-center mb-12"
           >
-            <h2 className="text-4xl lg:text-5xl font-bold text-gray-900 mb-6">
+            <h2 className="text-3xl lg:text-4xl font-bold text-gray-900 dark:text-white mb-4">
               Powerful Features for
               <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent block">
                 Educational Excellence
               </span>
             </h2>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              Everything you need to manage a modern higher education institution, 
+            <p className="text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
+              Everything you need to manage a modern higher education institution,
               built with cutting-edge technology and designed for the Rwandan context.
             </p>
           </motion.div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
             {features.map((feature, index) => (
               <Feature3DCard
                 key={index}
