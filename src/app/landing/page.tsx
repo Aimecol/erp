@@ -163,48 +163,59 @@ export default function LandingPage() {
   const opacity = useTransform(scrollYProgress, [0, 0.5], [1, 0]);
   const { theme } = useTheme();
 
+  // Get the effective theme (resolve 'system' to actual theme)
+  const getEffectiveTheme = () => {
+    if (typeof window === 'undefined') return 'light'; // SSR fallback
+    if (theme === 'system') {
+      return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+    }
+    return theme;
+  };
+
+  const effectiveTheme = getEffectiveTheme();
+
   // Theme-aware features
-  const getFeatures = () => {
+  const getFeatures = (currentTheme: 'light' | 'dark') => {
     const baseFeatures = [
       {
         icon: faChartBar,
-        title: effectiveTheme === 'light' ? "Comprehensive Dashboard" : "AI-Powered Analytics",
-        description: effectiveTheme === 'light'
+        title: currentTheme === 'light' ? "Comprehensive Dashboard" : "AI-Powered Analytics",
+        description: currentTheme === 'light'
           ? "12 KPI cards and 5 interactive charts providing real-time insights into institutional performance with beautiful visualizations."
           : "Advanced machine learning algorithms analyze institutional data to provide predictive insights and automated recommendations."
       },
       {
         icon: faDollarSign,
-        title: effectiveTheme === 'light' ? "Financial Management (RWF)" : "Smart Financial Operations",
-        description: effectiveTheme === 'light'
+        title: currentTheme === 'light' ? "Financial Management (RWF)" : "Smart Financial Operations",
+        description: currentTheme === 'light'
           ? "Complete financial operations in Rwandan Francs including fee collection, budgeting, accounting, and compliance reporting."
           : "AI-driven financial forecasting and automated transaction processing with blockchain-secured RWF operations."
       },
       {
         icon: faGraduationCap,
-        title: effectiveTheme === 'light' ? "Academic Administration" : "Intelligent Academic System",
-        description: effectiveTheme === 'light'
+        title: currentTheme === 'light' ? "Academic Administration" : "Intelligent Academic System",
+        description: currentTheme === 'light'
           ? "Student enrollment, program management, performance tracking, and academic calendar with comprehensive reporting."
           : "Machine learning-powered student success prediction, automated scheduling, and personalized learning path recommendations."
       },
       {
         icon: faUsers,
-        title: effectiveTheme === 'light' ? "Human Resources" : "Digital Workforce Management",
-        description: effectiveTheme === 'light'
+        title: currentTheme === 'light' ? "Human Resources" : "Digital Workforce Management",
+        description: currentTheme === 'light'
           ? "Staff management, payroll processing, benefits administration, and performance tracking for institutional excellence."
           : "AI-enhanced talent management with predictive performance analytics and automated workflow optimization."
       },
       {
         icon: faShield,
-        title: effectiveTheme === 'light' ? "Role-Based Security" : "Advanced Cybersecurity",
-        description: effectiveTheme === 'light'
+        title: currentTheme === 'light' ? "Role-Based Security" : "Advanced Cybersecurity",
+        description: currentTheme === 'light'
           ? "Advanced permission system with roles for Admin, Bursar, Store Manager, Academic Staff, and Auditor access control."
           : "Zero-trust security architecture with biometric authentication, behavioral analysis, and quantum-encrypted data protection."
       },
       {
         icon: faGlobe,
-        title: effectiveTheme === 'light' ? "Rwandan Localization" : "Global Digital Integration",
-        description: effectiveTheme === 'light'
+        title: currentTheme === 'light' ? "Rwandan Localization" : "Global Digital Integration",
+        description: currentTheme === 'light'
           ? "Built specifically for Rwanda with RWF currency, Africa/Kigali timezone, and local compliance requirements."
           : "Seamless integration with global educational networks while maintaining local compliance and cultural adaptation."
       }
@@ -212,7 +223,7 @@ export default function LandingPage() {
     return baseFeatures;
   };
 
-  const features = getFeatures();
+  const features = getFeatures(effectiveTheme);
 
   // Theme-aware content
   const themeContent = {
@@ -264,15 +275,6 @@ export default function LandingPage() {
     }
   };
 
-  // Get the effective theme (resolve 'system' to actual theme)
-  const getEffectiveTheme = () => {
-    if (theme === 'system') {
-      return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-    }
-    return theme;
-  };
-
-  const effectiveTheme = getEffectiveTheme();
   const currentContent = themeContent[effectiveTheme] || themeContent.light;
 
   return (
