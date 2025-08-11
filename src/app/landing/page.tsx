@@ -4,33 +4,45 @@ import React, { useEffect, useRef } from 'react';
 import './landing.css';
 import Link from 'next/link';
 import { motion, useScroll, useTransform, useInView } from 'framer-motion';
-import { 
-  ArrowRight, 
-  BarChart3, 
-  Users, 
-  GraduationCap, 
-  DollarSign,
-  Shield,
-  Zap,
-  Globe,
-  Award,
-  TrendingUp,
-  BookOpen,
-  Building,
-  CheckCircle,
-  Play
-} from 'lucide-react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import {
+  faArrowRight,
+  faChartBar,
+  faUsers,
+  faGraduationCap,
+  faDollarSign,
+  faShield,
+  faBolt,
+  faGlobe,
+  faAward,
+  faArrowTrendUp,
+  faBookOpen,
+  faBuilding,
+  faCheckCircle,
+  faPlay,
+  faPause,
+  faUniversity,
+  faChartLine,
+  faUserGraduate,
+  faMoneyBillWave,
+  faLaptop,
+  faCode,
+  faPalette,
+  faDatabase,
+  faRocket,
+  faMagic
+} from '@fortawesome/free-solid-svg-icons';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { LandingNavigation } from '@/components/landing/navigation';
 import { InteractiveDemo } from '@/components/landing/interactive-demo';
 
 // 3D Card Component with animations
-const Feature3DCard = ({ 
-  icon: Icon, 
-  title, 
-  description, 
-  delay = 0 
+const Feature3DCard = ({
+  icon,
+  title,
+  description,
+  delay = 0
 }: {
   icon: any;
   title: string;
@@ -46,8 +58,8 @@ const Feature3DCard = ({
       initial={{ opacity: 0, y: 50, rotateX: -15 }}
       animate={isInView ? { opacity: 1, y: 0, rotateX: 0 } : {}}
       transition={{ duration: 0.6, delay }}
-      whileHover={{ 
-        scale: 1.05, 
+      whileHover={{
+        scale: 1.05,
         rotateY: 5,
         boxShadow: "0 25px 50px -12px rgba(0, 0, 0, 0.25)"
       }}
@@ -57,7 +69,7 @@ const Feature3DCard = ({
         <CardContent className="p-8">
           <div className="mb-6">
             <div className="w-16 h-16 bg-gradient-to-br from-blue-500 to-purple-600 rounded-2xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300">
-              <Icon className="w-8 h-8 text-white" />
+              <FontAwesomeIcon icon={icon} className="w-8 h-8 text-white" />
             </div>
             <h3 className="text-xl font-bold text-gray-900 mb-3">{title}</h3>
             <p className="text-gray-600 leading-relaxed">{description}</p>
@@ -151,42 +163,42 @@ export default function LandingPage() {
 
   const features = [
     {
-      icon: BarChart3,
+      icon: faChartBar,
       title: "Comprehensive Dashboard",
       description: "12 KPI cards and 5 interactive charts providing real-time insights into institutional performance with beautiful visualizations."
     },
     {
-      icon: DollarSign,
+      icon: faDollarSign,
       title: "Financial Management (RWF)",
       description: "Complete financial operations in Rwandan Francs including fee collection, budgeting, accounting, and compliance reporting."
     },
     {
-      icon: GraduationCap,
+      icon: faGraduationCap,
       title: "Academic Administration",
       description: "Student enrollment, program management, performance tracking, and academic calendar with comprehensive reporting."
     },
     {
-      icon: Users,
+      icon: faUsers,
       title: "Human Resources",
       description: "Staff management, payroll processing, benefits administration, and performance tracking for institutional excellence."
     },
     {
-      icon: Shield,
+      icon: faShield,
       title: "Role-Based Security",
       description: "Advanced permission system with roles for Admin, Bursar, Store Manager, Academic Staff, and Auditor access control."
     },
     {
-      icon: Globe,
+      icon: faGlobe,
       title: "Rwandan Localization",
       description: "Built specifically for Rwanda with RWF currency, Africa/Kigali timezone, and local compliance requirements."
     }
   ];
 
   const stats = [
-    { number: "1,518", label: "Active Students", icon: Users },
-    { number: "24", label: "Academic Programs", icon: BookOpen },
-    { number: "192M", label: "RWF Collections", icon: DollarSign },
-    { number: "94.5%", label: "Success Rate", icon: TrendingUp }
+    { number: "1,518", label: "Active Students", icon: faUsers },
+    { number: "24", label: "Academic Programs", icon: faBookOpen },
+    { number: "192M", label: "RWF Collections", icon: faDollarSign },
+    { number: "94.5%", label: "Success Rate", icon: faArrowTrendUp }
   ];
 
   return (
@@ -215,7 +227,7 @@ export default function LandingPage() {
               transition={{ delay: 0.2 }}
               className="inline-flex items-center px-4 py-2 bg-blue-100 text-blue-800 rounded-full text-sm font-medium mb-6"
             >
-              <Award className="w-4 h-4 mr-2" />
+              <FontAwesomeIcon icon={faAward} className="w-4 h-4 mr-2" />
               Institut d'Enseignement Supérieur de Ruhengeri
             </motion.div>
 
@@ -250,11 +262,11 @@ export default function LandingPage() {
               <Link href="/login">
                 <Button size="lg" className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white px-8 py-4 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 group">
                   Access Dashboard
-                  <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                  <FontAwesomeIcon icon={faArrowRight} className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
                 </Button>
               </Link>
               <Button variant="outline" size="lg" className="px-8 py-4 rounded-xl border-2 hover:bg-gray-50 transition-all duration-300 group">
-                <Play className="mr-2 w-5 h-5" />
+                <FontAwesomeIcon icon={faPlay} className="mr-2 w-5 h-5" />
                 Watch Demo
               </Button>
             </motion.div>
@@ -286,7 +298,7 @@ export default function LandingPage() {
                 className="text-center group"
               >
                 <div className="w-16 h-16 bg-gradient-to-br from-blue-500 to-purple-600 rounded-2xl flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform duration-300">
-                  <stat.icon className="w-8 h-8 text-white" />
+                  <FontAwesomeIcon icon={stat.icon} className="w-8 h-8 text-white" />
                 </div>
                 <div className="text-3xl font-bold text-gray-900 mb-2">{stat.number}</div>
                 <div className="text-gray-600">{stat.label}</div>
@@ -326,7 +338,7 @@ export default function LandingPage() {
                   whileHover={{ scale: 1.1 }}
                   className="w-20 h-20 bg-white/20 rounded-full flex items-center justify-center backdrop-blur-sm group-hover:bg-white/30 transition-all duration-300"
                 >
-                  <Play className="w-8 h-8 text-white ml-1" />
+                  <FontAwesomeIcon icon={faPlay} className="w-8 h-8 text-white ml-1" />
                 </motion.div>
 
                 {/* Animated Background */}
@@ -547,7 +559,7 @@ export default function LandingPage() {
                 <ul className="space-y-3 mb-8">
                   {plan.features.map((feature, featureIndex) => (
                     <li key={featureIndex} className="flex items-center">
-                      <CheckCircle className="w-5 h-5 text-green-500 mr-3 flex-shrink-0" />
+                      <FontAwesomeIcon icon={faCheckCircle} className="w-5 h-5 text-green-500 mr-3 flex-shrink-0" />
                       <span className="text-gray-700">{feature}</span>
                     </li>
                   ))}
@@ -587,12 +599,12 @@ export default function LandingPage() {
 
           <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-8">
             {[
-              { name: "Next.js 15", logo: "⚡" },
-              { name: "TypeScript", logo: "📘" },
-              { name: "Tailwind CSS", logo: "🎨" },
-              { name: "React Query", logo: "🔄" },
-              { name: "Recharts", logo: "📊" },
-              { name: "Framer Motion", logo: "🎭" }
+              { name: "Next.js 15", icon: faRocket },
+              { name: "TypeScript", icon: faCode },
+              { name: "Tailwind CSS", icon: faPalette },
+              { name: "React Query", icon: faDatabase },
+              { name: "Recharts", icon: faChartLine },
+              { name: "FontAwesome", icon: faMagic }
             ].map((tech, index) => (
               <motion.div
                 key={index}
@@ -604,7 +616,7 @@ export default function LandingPage() {
                 className="text-center group cursor-pointer"
               >
                 <div className="w-20 h-20 bg-white/10 rounded-2xl flex items-center justify-center mx-auto mb-4 group-hover:bg-white/20 transition-all duration-300 backdrop-blur-sm">
-                  <span className="text-3xl">{tech.logo}</span>
+                  <FontAwesomeIcon icon={tech.icon} className="text-3xl text-white" />
                 </div>
                 <div className="text-sm font-medium">{tech.name}</div>
               </motion.div>
@@ -631,7 +643,7 @@ export default function LandingPage() {
               <Link href="/login">
                 <Button size="lg" variant="secondary" className="px-8 py-4 rounded-xl text-blue-600 hover:text-blue-700 transition-all duration-300 group">
                   Start Free Trial
-                  <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                  <FontAwesomeIcon icon={faArrowRight} className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
                 </Button>
               </Link>
               <Button size="lg" variant="outline" className="px-8 py-4 rounded-xl border-white text-white hover:bg-white hover:text-blue-600 transition-all duration-300">
@@ -648,7 +660,7 @@ export default function LandingPage() {
           <div className="grid md:grid-cols-4 gap-8">
             <div>
               <div className="flex items-center space-x-2 mb-4">
-                <Building className="w-8 h-8 text-blue-400" />
+                <FontAwesomeIcon icon={faBuilding} className="w-8 h-8 text-blue-400" />
                 <span className="text-xl font-bold">INES-Ruhengeri ERP</span>
               </div>
               <p className="text-gray-400">

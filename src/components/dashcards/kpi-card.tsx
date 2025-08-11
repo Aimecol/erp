@@ -1,5 +1,6 @@
 import React from 'react';
-import { TrendingUp, TrendingDown } from 'lucide-react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faArrowTrendUp, faArrowTrendDown } from '@fortawesome/free-solid-svg-icons';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { cn, formatCurrency, formatNumber } from '@/lib/utils';
 
@@ -73,8 +74,8 @@ export function KpiCard({
         <div className="text-2xl font-bold">{formatValue(value)}</div>
         {change !== undefined && (
           <div className="flex items-center text-xs text-muted-foreground">
-            {isPositive && <TrendingUp className="mr-1 h-3 w-3 text-success-600" />}
-            {isNegative && <TrendingDown className="mr-1 h-3 w-3 text-danger-600" />}
+            {isPositive && <FontAwesomeIcon icon={faArrowTrendUp} className="mr-1 h-3 w-3 text-success-600" />}
+            {isNegative && <FontAwesomeIcon icon={faArrowTrendDown} className="mr-1 h-3 w-3 text-danger-600" />}
             <span
               className={cn(
                 isPositive && 'text-success-600',

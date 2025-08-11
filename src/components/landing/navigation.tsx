@@ -3,16 +3,17 @@
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
-import { 
-  Building, 
-  Menu, 
-  X, 
-  ArrowRight,
-  BarChart3,
-  Users,
-  DollarSign,
-  Shield
-} from 'lucide-react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import {
+  faBuilding,
+  faBars,
+  faTimes,
+  faArrowRight,
+  faChartBar,
+  faUsers,
+  faDollarSign,
+  faShield
+} from '@fortawesome/free-solid-svg-icons';
 import { Button } from '@/components/ui/button';
 
 export function LandingNavigation() {
@@ -29,10 +30,10 @@ export function LandingNavigation() {
   }, []);
 
   const navItems = [
-    { name: 'Features', href: '#features', icon: BarChart3 },
-    { name: 'Dashboard', href: '#dashboard', icon: Users },
-    { name: 'Pricing', href: '#pricing', icon: DollarSign },
-    { name: 'Security', href: '#security', icon: Shield },
+    { name: 'Features', href: '#features', icon: faChartBar },
+    { name: 'Dashboard', href: '#dashboard', icon: faUsers },
+    { name: 'Pricing', href: '#pricing', icon: faDollarSign },
+    { name: 'Security', href: '#security', icon: faShield },
   ];
 
   return (
@@ -53,7 +54,7 @@ export function LandingNavigation() {
             className="flex items-center space-x-2"
           >
             <div className="w-10 h-10 bg-gradient-to-br from-blue-600 to-purple-600 rounded-xl flex items-center justify-center">
-              <Building className="w-6 h-6 text-white" />
+              <FontAwesomeIcon icon={faBuilding} className="w-6 h-6 text-white" />
             </div>
             <div className="hidden sm:block">
               <div className="text-lg font-bold text-gray-900">INES-Ruhengeri</div>
@@ -73,7 +74,7 @@ export function LandingNavigation() {
                 whileHover={{ scale: 1.05 }}
                 className="flex items-center space-x-1 text-gray-700 hover:text-blue-600 transition-colors duration-200 font-medium"
               >
-                <item.icon className="w-4 h-4" />
+                <FontAwesomeIcon icon={item.icon} className="w-4 h-4" />
                 <span>{item.name}</span>
               </motion.a>
             ))}
@@ -89,7 +90,7 @@ export function LandingNavigation() {
             <Link href="/login">
               <Button className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white group">
                 Get Started
-                <ArrowRight className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                <FontAwesomeIcon icon={faArrowRight} className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" />
               </Button>
             </Link>
           </div>
@@ -100,7 +101,7 @@ export function LandingNavigation() {
             onClick={() => setIsOpen(!isOpen)}
             className="md:hidden p-2 rounded-lg text-gray-700 hover:bg-gray-100 transition-colors"
           >
-            {isOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+            {isOpen ? <FontAwesomeIcon icon={faTimes} className="w-6 h-6" /> : <FontAwesomeIcon icon={faBars} className="w-6 h-6" />}
           </motion.button>
         </div>
       </div>
@@ -125,7 +126,7 @@ export function LandingNavigation() {
                   onClick={() => setIsOpen(false)}
                   className="flex items-center space-x-3 text-gray-700 hover:text-blue-600 transition-colors duration-200 font-medium py-2"
                 >
-                  <item.icon className="w-5 h-5" />
+                  <FontAwesomeIcon icon={item.icon} className="w-5 h-5" />
                   <span>{item.name}</span>
                 </motion.a>
               ))}
@@ -139,7 +140,7 @@ export function LandingNavigation() {
                 <Link href="/login" onClick={() => setIsOpen(false)}>
                   <Button className="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white">
                     Get Started
-                    <ArrowRight className="ml-2 w-4 h-4" />
+                    <FontAwesomeIcon icon={faArrowRight} className="ml-2 w-4 h-4" />
                   </Button>
                 </Link>
               </div>

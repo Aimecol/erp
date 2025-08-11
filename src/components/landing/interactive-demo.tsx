@@ -2,17 +2,18 @@
 
 import React, { useState, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { 
-  BarChart3, 
-  Users, 
-  DollarSign, 
-  GraduationCap,
-  TrendingUp,
-  Calendar,
-  X,
-  Play,
-  Pause
-} from 'lucide-react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import {
+  faChartBar,
+  faUsers,
+  faDollarSign,
+  faGraduationCap,
+  faArrowTrendUp,
+  faCalendar,
+  faTimes,
+  faPlay,
+  faPause
+} from '@fortawesome/free-solid-svg-icons';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 
@@ -34,7 +35,7 @@ export function InteractiveDemo() {
       id: 'dashboard',
       title: 'Real-time Dashboard',
       description: 'Monitor all KPIs and metrics in one place',
-      icon: BarChart3,
+      icon: faChartBar,
       color: 'from-blue-500 to-blue-600',
       demo: (
         <div className="space-y-4">
@@ -70,7 +71,7 @@ export function InteractiveDemo() {
       id: 'students',
       title: 'Student Management',
       description: 'Track enrollment, performance, and graduation',
-      icon: Users,
+      icon: faUsers,
       color: 'from-green-500 to-green-600',
       demo: (
         <div className="space-y-3">
@@ -106,7 +107,7 @@ export function InteractiveDemo() {
       id: 'finance',
       title: 'Financial Management',
       description: 'Handle fees, budgets, and accounting in RWF',
-      icon: DollarSign,
+      icon: faDollarSign,
       color: 'from-purple-500 to-purple-600',
       demo: (
         <div className="space-y-4">
@@ -138,7 +139,7 @@ export function InteractiveDemo() {
       id: 'academic',
       title: 'Academic Performance',
       description: 'Monitor grades, courses, and achievements',
-      icon: GraduationCap,
+      icon: faGraduationCap,
       color: 'from-orange-500 to-orange-600',
       demo: (
         <div className="space-y-4">
@@ -191,7 +192,7 @@ export function InteractiveDemo() {
             onClick={() => setIsPlaying(!isPlaying)}
             className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white"
           >
-            {isPlaying ? <Pause className="w-4 h-4 mr-2" /> : <Play className="w-4 h-4 mr-2" />}
+            {isPlaying ? <FontAwesomeIcon icon={faPause} className="w-4 h-4 mr-2" /> : <FontAwesomeIcon icon={faPlay} className="w-4 h-4 mr-2" />}
             {isPlaying ? 'Pause Demo' : 'Start Auto Demo'}
           </Button>
         </motion.div>
@@ -218,7 +219,7 @@ export function InteractiveDemo() {
                   <CardContent className="p-6">
                     <div className="flex items-center space-x-4">
                       <div className={`w-12 h-12 bg-gradient-to-r ${feature.color} rounded-xl flex items-center justify-center`}>
-                        <feature.icon className="w-6 h-6 text-white" />
+                        <FontAwesomeIcon icon={feature.icon} className="w-6 h-6 text-white" />
                       </div>
                       <div className="flex-1">
                         <h3 className="text-lg font-semibold text-gray-900 mb-1">
@@ -232,7 +233,7 @@ export function InteractiveDemo() {
                         animate={{ rotate: activeFeature === feature.id ? 45 : 0 }}
                         className="text-gray-400"
                       >
-                        {activeFeature === feature.id ? <X className="w-5 h-5" /> : <TrendingUp className="w-5 h-5" />}
+                        {activeFeature === feature.id ? <FontAwesomeIcon icon={faTimes} className="w-5 h-5" /> : <FontAwesomeIcon icon={faArrowTrendUp} className="w-5 h-5" />}
                       </motion.div>
                     </div>
                   </CardContent>
@@ -273,7 +274,7 @@ export function InteractiveDemo() {
                       className="h-full flex items-center justify-center text-center"
                     >
                       <div>
-                        <Calendar className="w-16 h-16 text-gray-300 mx-auto mb-4" />
+                        <FontAwesomeIcon icon={faCalendar} className="w-16 h-16 text-gray-300 mx-auto mb-4" />
                         <h3 className="text-lg font-medium text-gray-500 mb-2">
                           Select a Feature
                         </h3>

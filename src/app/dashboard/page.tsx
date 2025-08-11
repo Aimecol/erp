@@ -2,20 +2,21 @@
 
 import React from 'react';
 import { useQuery } from '@tanstack/react-query';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
-  DollarSign,
-  ShoppingCart,
-  Users,
-  Package,
-  TrendingUp,
-  AlertTriangle,
-  GraduationCap,
-  BookOpen,
-  Calendar,
-  BarChart3,
-  PieChart,
-  Activity
-} from 'lucide-react';
+  faDollarSign,
+  faShoppingCart,
+  faUsers,
+  faBox,
+  faArrowTrendUp,
+  faExclamationTriangle,
+  faGraduationCap,
+  faBookOpen,
+  faCalendar,
+  faChartBar,
+  faChartPie,
+  faChartLine
+} from '@fortawesome/free-solid-svg-icons';
 import { KpiCard } from '@/components/dashcards/kpi-card';
 import { RevenueChart } from '@/components/charts/revenue-chart';
 import { EnrollmentChart } from '@/components/charts/enrollment-chart';
@@ -308,7 +309,7 @@ export default function DashboardPage() {
           title="Total Students"
           value={dashboardData?.students?.current || 1518}
           change={dashboardData?.students?.change || 5.2}
-          icon={<Users className="h-4 w-4" />}
+          icon={<FontAwesomeIcon icon={faUsers} className="h-4 w-4" />}
           loading={isLoading}
         />
 
@@ -316,7 +317,7 @@ export default function DashboardPage() {
           title="Active Programs"
           value={dashboardData?.programs?.current || 24}
           change={dashboardData?.programs?.change || 2.1}
-          icon={<GraduationCap className="h-4 w-4" />}
+          icon={<FontAwesomeIcon icon={faGraduationCap} className="h-4 w-4" />}
           loading={isLoading}
         />
 
@@ -327,7 +328,7 @@ export default function DashboardPage() {
             change={dashboardData?.feesChange || -12.5}
             format="currency"
             currency="RWF"
-            icon={<AlertTriangle className="h-4 w-4" />}
+            icon={<FontAwesomeIcon icon={faExclamationTriangle} className="h-4 w-4" />}
             loading={isLoading}
           />
         )}
@@ -339,7 +340,7 @@ export default function DashboardPage() {
             change={dashboardData?.collectionsChange || 8.3}
             format="currency"
             currency="RWF"
-            icon={<DollarSign className="h-4 w-4" />}
+            icon={<FontAwesomeIcon icon={faDollarSign} className="h-4 w-4" />}
             loading={isLoading}
           />
         )}
@@ -350,7 +351,7 @@ export default function DashboardPage() {
             value={dashboardData?.inventory?.current || 85}
             change={dashboardData?.inventory?.change || 2.1}
             format="percentage"
-            icon={<Package className="h-4 w-4" />}
+            icon={<FontAwesomeIcon icon={faBox} className="h-4 w-4" />}
             loading={isLoading}
           />
         )}
@@ -361,7 +362,7 @@ export default function DashboardPage() {
             value={dashboardData?.academicAverage || 82.1}
             change={dashboardData?.academicChange || 3.2}
             format="percentage"
-            icon={<BookOpen className="h-4 w-4" />}
+            icon={<FontAwesomeIcon icon={faBookOpen} className="h-4 w-4" />}
             loading={isLoading}
           />
         )}
@@ -373,7 +374,7 @@ export default function DashboardPage() {
           title="New Enrollments"
           value={dashboardData?.newEnrollments || 25}
           change={dashboardData?.enrollmentChange || -24.2}
-          icon={<Calendar className="h-4 w-4" />}
+          icon={<FontAwesomeIcon icon={faCalendar} className="h-4 w-4" />}
           loading={isLoading}
         />
 
@@ -382,7 +383,7 @@ export default function DashboardPage() {
           value={dashboardData?.graduationRate || 94.5}
           change={dashboardData?.graduationChange || 1.8}
           format="percentage"
-          icon={<TrendingUp className="h-4 w-4" />}
+          icon={<FontAwesomeIcon icon={faArrowTrendUp} className="h-4 w-4" />}
           loading={isLoading}
         />
 
@@ -392,7 +393,7 @@ export default function DashboardPage() {
             value={dashboardData?.collectionRate || 81.2}
             change={dashboardData?.collectionRateChange || 4.1}
             format="percentage"
-            icon={<BarChart3 className="h-4 w-4" />}
+            icon={<FontAwesomeIcon icon={faChartBar} className="h-4 w-4" />}
             loading={isLoading}
           />
         )}
@@ -402,7 +403,7 @@ export default function DashboardPage() {
             title="Stock Turnover"
             value={dashboardData?.stockTurnover || 6.8}
             change={dashboardData?.turnoverChange || 0.5}
-            icon={<Activity className="h-4 w-4" />}
+            icon={<FontAwesomeIcon icon={faChartLine} className="h-4 w-4" />}
             loading={isLoading}
           />
         )}
@@ -413,7 +414,7 @@ export default function DashboardPage() {
             value={dashboardData?.courseCompletion || 89.3}
             change={dashboardData?.completionChange || 2.7}
             format="percentage"
-            icon={<PieChart className="h-4 w-4" />}
+            icon={<FontAwesomeIcon icon={faChartPie} className="h-4 w-4" />}
             loading={isLoading}
           />
         )}
@@ -423,7 +424,7 @@ export default function DashboardPage() {
             title="Faculty Ratio"
             value={dashboardData?.facultyRatio || 18.5}
             change={dashboardData?.ratioChange || -0.8}
-            icon={<Users className="h-4 w-4" />}
+            icon={<FontAwesomeIcon icon={faUsers} className="h-4 w-4" />}
             loading={isLoading}
           />
         )}
@@ -494,7 +495,7 @@ export default function DashboardPage() {
           <Card>
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
-                <TrendingUp className="h-5 w-5" />
+                <FontAwesomeIcon icon={faArrowTrendUp} className="h-5 w-5" />
                 Top Academic Programs
               </CardTitle>
               <CardDescription>
