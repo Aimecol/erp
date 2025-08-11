@@ -1,0 +1,402 @@
+import { 
+  Item, 
+  Warehouse, 
+  GoodsReceiptNote, 
+  GoodsIssueNote, 
+  StockTransfer, 
+  ReorderAlert, 
+  ExpiryAlert,
+  BatchTracking,
+  SerialTracking,
+  ItemCategory,
+  BusinessPartner
+} from '@/types';
+
+// Mock Enhanced Warehouses for INES-Ruhengeri
+export const mockEnhancedWarehouses: Warehouse[] = [
+  {
+    id: 'wh-main',
+    code: 'MAIN',
+    name: 'Main Store',
+    type: 'main',
+    manager: 'Mr. Paul Kagame Muhire',
+    address: {
+      id: 'addr-main',
+      type: 'other',
+      street: 'INES Campus',
+      city: 'Musanze',
+      state: 'Northern Province',
+      postalCode: '00000',
+      country: 'Rwanda',
+      isDefault: true,
+    },
+    isActive: true,
+    isDefault: true,
+    createdAt: new Date('2024-01-01'),
+    updatedAt: new Date('2024-01-15'),
+  },
+  {
+    id: 'wh-lab',
+    code: 'LAB',
+    name: 'Laboratory Store',
+    type: 'lab',
+    manager: 'Dr. Marie Claire Uwimana',
+    address: {
+      id: 'addr-lab',
+      type: 'other',
+      street: 'Science Building, INES Campus',
+      city: 'Musanze',
+      state: 'Northern Province',
+      postalCode: '00000',
+      country: 'Rwanda',
+      isDefault: false,
+    },
+    isActive: true,
+    isDefault: false,
+    createdAt: new Date('2024-01-01'),
+    updatedAt: new Date('2024-01-15'),
+  },
+  {
+    id: 'wh-admin',
+    code: 'ADMIN',
+    name: 'Administration Store',
+    type: 'admin',
+    manager: 'Mrs. Grace Mukamana',
+    address: {
+      id: 'addr-admin',
+      type: 'other',
+      street: 'Admin Building, INES Campus',
+      city: 'Musanze',
+      state: 'Northern Province',
+      postalCode: '00000',
+      country: 'Rwanda',
+      isDefault: false,
+    },
+    isActive: true,
+    isDefault: false,
+    createdAt: new Date('2024-01-01'),
+    updatedAt: new Date('2024-01-15'),
+  },
+  {
+    id: 'wh-library',
+    code: 'LIB',
+    name: 'Library Store',
+    type: 'library',
+    manager: 'Ms. Claudine Uwimana',
+    address: {
+      id: 'addr-library',
+      type: 'other',
+      street: 'Library Building, INES Campus',
+      city: 'Musanze',
+      state: 'Northern Province',
+      postalCode: '00000',
+      country: 'Rwanda',
+      isDefault: false,
+    },
+    isActive: true,
+    isDefault: false,
+    createdAt: new Date('2024-01-01'),
+    updatedAt: new Date('2024-01-15'),
+  },
+];
+
+// Mock Enhanced Items for Educational Institution
+export const mockEnhancedItems: Item[] = [
+  {
+    id: 'item-comp-001',
+    code: 'COMP-001',
+    name: 'Desktop Computer - Dell OptiPlex',
+    description: 'Dell OptiPlex 7090 Desktop Computer for computer labs',
+    category: { id: 'cat-electronics', name: 'Electronics', description: 'Electronic equipment' },
+    type: 'inventory',
+    unitOfMeasure: 'Each',
+    purchasePrice: 850000,
+    salesPrice: 0,
+    standardCost: 850000,
+    isActive: true,
+    isBatchManaged: false,
+    isSerialManaged: true,
+    minStock: 5,
+    maxStock: 50,
+    reorderLevel: 10,
+    preferredVendor: 'supplier-tech',
+    currentStock: 8,
+    lastMovement: new Date('2024-07-15'),
+    createdAt: new Date('2024-01-01'),
+    updatedAt: new Date('2024-07-15'),
+  },
+  {
+    id: 'item-chem-001',
+    code: 'CHEM-001',
+    name: 'Laboratory Chemicals Set',
+    description: 'Basic chemistry laboratory chemicals for experiments',
+    category: { id: 'cat-lab-supplies', name: 'Laboratory Supplies', description: 'Lab equipment and supplies' },
+    type: 'inventory',
+    unitOfMeasure: 'Set',
+    purchasePrice: 125000,
+    salesPrice: 0,
+    standardCost: 125000,
+    isActive: true,
+    isBatchManaged: true,
+    isSerialManaged: false,
+    minStock: 10,
+    maxStock: 100,
+    reorderLevel: 20,
+    preferredVendor: 'supplier-lab',
+    currentStock: 15,
+    lastMovement: new Date('2024-07-10'),
+    createdAt: new Date('2024-01-01'),
+    updatedAt: new Date('2024-07-10'),
+  },
+  {
+    id: 'item-paper-001',
+    code: 'PAPER-001',
+    name: 'A4 Printing Paper',
+    description: 'Premium A4 white printing paper 80gsm',
+    category: { id: 'cat-office', name: 'Office Supplies', description: 'Office stationery and supplies' },
+    type: 'inventory',
+    unitOfMeasure: 'Ream',
+    purchasePrice: 8500,
+    salesPrice: 0,
+    standardCost: 8500,
+    isActive: true,
+    isBatchManaged: true,
+    isSerialManaged: false,
+    minStock: 50,
+    maxStock: 500,
+    reorderLevel: 100,
+    preferredVendor: 'supplier-office',
+    currentStock: 45,
+    lastMovement: new Date('2024-07-20'),
+    createdAt: new Date('2024-01-01'),
+    updatedAt: new Date('2024-07-20'),
+  },
+];
+
+// Mock Goods Receipt Notes
+export const mockGoodsReceiptNotes: GoodsReceiptNote[] = [
+  {
+    id: 'grn-001',
+    grnNumber: 'GRN-2024-001',
+    supplierId: 'supplier-tech',
+    supplier: {
+      id: 'supplier-tech',
+      code: 'TECH-001',
+      name: 'TechSupply Rwanda Ltd',
+      type: 'supplier',
+      email: 'orders@techsupply.rw',
+      phone: '+250788123456',
+      isActive: true,
+      createdAt: new Date('2024-01-01'),
+      updatedAt: new Date('2024-01-15'),
+    },
+    warehouseId: 'wh-main',
+    warehouse: mockEnhancedWarehouses[0],
+    receiptDate: new Date('2024-07-15'),
+    deliveryNote: 'DN-2024-001',
+    lines: [
+      {
+        id: 'grn-line-001',
+        lineNumber: 1,
+        itemId: 'item-comp-001',
+        item: mockEnhancedItems[0],
+        orderedQuantity: 10,
+        receivedQuantity: 10,
+        unitPrice: 850000,
+        lineTotal: 8500000,
+        serialNumbers: ['DELL001', 'DELL002', 'DELL003', 'DELL004', 'DELL005', 'DELL006', 'DELL007', 'DELL008', 'DELL009', 'DELL010'],
+        notes: 'All items received in good condition',
+      }
+    ],
+    status: 'posted',
+    totalAmount: 8500000,
+    receivedBy: 'Mr. Paul Kagame Muhire',
+    approvedBy: 'Dr. Jean Baptiste Nzeyimana',
+    approvedDate: new Date('2024-07-15'),
+    notes: 'Computers for new computer lab',
+    attachments: ['delivery_note.pdf', 'invoice.pdf'],
+    createdAt: new Date('2024-07-15'),
+    updatedAt: new Date('2024-07-15'),
+  },
+];
+
+// Mock Goods Issue Notes
+export const mockGoodsIssueNotes: GoodsIssueNote[] = [
+  {
+    id: 'gin-001',
+    ginNumber: 'GIN-2024-001',
+    issueType: 'department',
+    departmentId: 'dept-cs',
+    warehouseId: 'wh-main',
+    warehouse: mockEnhancedWarehouses[0],
+    issueDate: new Date('2024-07-20'),
+    requestedBy: 'Dr. Marie Claire Uwimana',
+    issuedBy: 'Mr. Paul Kagame Muhire',
+    approvedBy: 'Dr. Jean Baptiste Nzeyimana',
+    approvedDate: new Date('2024-07-19'),
+    lines: [
+      {
+        id: 'gin-line-001',
+        lineNumber: 1,
+        itemId: 'item-comp-001',
+        item: mockEnhancedItems[0],
+        requestedQuantity: 2,
+        issuedQuantity: 2,
+        unitCost: 850000,
+        lineTotal: 1700000,
+        serialNumbers: ['DELL001', 'DELL002'],
+        notes: 'For new programming lab setup',
+      }
+    ],
+    status: 'issued',
+    totalValue: 1700000,
+    purpose: 'Computer Science Department - Programming Lab Setup',
+    notes: 'Computers issued for new programming lab',
+    createdAt: new Date('2024-07-18'),
+    updatedAt: new Date('2024-07-20'),
+  },
+];
+
+// Mock Stock Transfers
+export const mockStockTransfers: StockTransfer[] = [
+  {
+    id: 'transfer-001',
+    transferNumber: 'TRF-2024-001',
+    fromWarehouseId: 'wh-main',
+    fromWarehouse: mockEnhancedWarehouses[0],
+    toWarehouseId: 'wh-lab',
+    toWarehouse: mockEnhancedWarehouses[1],
+    transferDate: new Date('2024-07-22'),
+    requestedBy: 'Dr. Marie Claire Uwimana',
+    approvedBy: 'Mr. Paul Kagame Muhire',
+    approvedDate: new Date('2024-07-21'),
+    lines: [
+      {
+        id: 'transfer-line-001',
+        lineNumber: 1,
+        itemId: 'item-chem-001',
+        item: mockEnhancedItems[1],
+        requestedQuantity: 5,
+        transferredQuantity: 5,
+        receivedQuantity: 5,
+        unitCost: 125000,
+        lineTotal: 625000,
+        batchNumber: 'CHEM-BATCH-001',
+        notes: 'For chemistry lab experiments',
+      }
+    ],
+    status: 'received',
+    totalValue: 625000,
+    notes: 'Transfer of chemicals to laboratory store',
+    createdAt: new Date('2024-07-20'),
+    updatedAt: new Date('2024-07-22'),
+  },
+];
+
+// Mock Reorder Alerts
+export const mockReorderAlerts: ReorderAlert[] = [
+  {
+    id: 'reorder-001',
+    itemId: 'item-paper-001',
+    item: mockEnhancedItems[2],
+    warehouseId: 'wh-main',
+    warehouse: mockEnhancedWarehouses[0],
+    currentStock: 45,
+    reorderLevel: 100,
+    suggestedOrderQuantity: 200,
+    priority: 'high',
+    alertDate: new Date('2024-07-20'),
+    status: 'active',
+    notes: 'Stock running low due to increased usage',
+  },
+  {
+    id: 'reorder-002',
+    itemId: 'item-comp-001',
+    item: mockEnhancedItems[0],
+    warehouseId: 'wh-main',
+    warehouse: mockEnhancedWarehouses[0],
+    currentStock: 8,
+    reorderLevel: 10,
+    suggestedOrderQuantity: 20,
+    priority: 'medium',
+    alertDate: new Date('2024-07-22'),
+    status: 'active',
+    notes: 'Need to restock for upcoming semester',
+  },
+];
+
+// Mock Expiry Alerts
+export const mockExpiryAlerts: ExpiryAlert[] = [
+  {
+    id: 'expiry-001',
+    itemId: 'item-chem-001',
+    item: mockEnhancedItems[1],
+    batchId: 'batch-chem-001',
+    batch: {
+      id: 'batch-chem-001',
+      batchNumber: 'CHEM-BATCH-001',
+      itemId: 'item-chem-001',
+      item: mockEnhancedItems[1],
+      warehouseId: 'wh-lab',
+      manufacturingDate: new Date('2024-01-15'),
+      expiryDate: new Date('2024-08-15'),
+      quantity: 5,
+      availableQuantity: 5,
+      unitCost: 125000,
+      status: 'active',
+      createdAt: new Date('2024-01-15'),
+      updatedAt: new Date('2024-07-22'),
+    },
+    warehouseId: 'wh-lab',
+    warehouse: mockEnhancedWarehouses[1],
+    expiryDate: new Date('2024-08-15'),
+    daysToExpiry: 24,
+    quantity: 5,
+    priority: 'high',
+    alertDate: new Date('2024-07-22'),
+    status: 'active',
+    action: 'consume_first',
+    notes: 'Chemistry set expiring soon - prioritize usage',
+  },
+];
+
+// Mock Dashboard Stats
+export const mockInventoryDashboardStats = {
+  totalItems: 1250,
+  activeItems: 1180,
+  totalStockValue: 450000000,
+  lowStockItems: 45,
+  expiringSoon: 12,
+};
+
+// Mock Receipt Stats
+export const mockReceiptStats = {
+  totalReceipts: 156,
+  totalValue: 125000000,
+  pendingPosting: 8,
+  avgProcessingTime: 2.5,
+};
+
+// Mock Issue Stats
+export const mockIssueStats = {
+  totalIssues: 89,
+  totalValue: 45000000,
+  pendingApproval: 12,
+  departmentIssues: 65,
+};
+
+// Mock Transfer Stats
+export const mockTransferStats = {
+  totalTransfers: 34,
+  totalValue: 25000000,
+  inTransit: 5,
+  completed: 27,
+};
+
+// Mock Alert Stats
+export const mockAlertStats = {
+  criticalAlerts: 8,
+  reorderAlerts: 45,
+  expiryAlerts: 12,
+  resolvedToday: 6,
+};
