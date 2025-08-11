@@ -1,29 +1,39 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, createContext, useContext } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSun, faMoon } from '@fortawesome/free-solid-svg-icons';
 import { Button } from '@/components/ui/button';
 
-export function ThemeToggle() {
+// Create theme context
+const ThemeContext = createContext<{
+  theme: 'light' | 'dark';
+  toggleTheme: () => void;
+}>({
+  theme: 'light',
+  toggleTheme: () => {},
+});
+
+export const useTheme = () => useContext(ThemeContext);
+
+export function ThemeProvider({ children }: { children: React.ReactNode }) {
   const [theme, setTheme] = useState<'light' | 'dark'>('light');
   const [mounted, setMounted] = useState(false);
 
-  // Ensure component is mounted before rendering to avoid hydration mismatch
   useEffect(() => {
     setMounted(true);
     // Check for saved theme preference or default to light
     const savedTheme = localStorage.getItem('theme') as 'light' | 'dark' | null;
     const systemTheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
     const initialTheme = savedTheme || systemTheme;
-    
+
     setTheme(initialTheme);
     applyTheme(initialTheme);
   }, []);
 
   const applyTheme = (newTheme: 'light' | 'dark') => {
     const root = document.documentElement;
-    
+
     if (newTheme === 'dark') {
       root.classList.add('dark');
       root.style.setProperty('--background', '222.2 84% 4.9%');
@@ -76,6 +86,26 @@ export function ThemeToggle() {
     applyTheme(newTheme);
   };
 
+  if (!mounted) {
+    return <div>{children}</div>;
+  }
+
+  return (
+    <ThemeContext.Provider value={{ theme, toggleTheme }}>
+      {children}
+    </ThemeContext.Provider>
+  );
+}
+
+export function ThemeToggle() {
+  const { theme, toggleTheme } = useTheme();
+  const [mounted, setMounted] = useState(false);
+
+  // Ensure component is mounted before rendering to avoid hydration mismatch
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
   // Don't render until mounted to avoid hydration mismatch
   if (!mounted) {
     return (
@@ -98,9 +128,9 @@ export function ThemeToggle() {
       className="w-9 h-9 p-0 hover:bg-accent hover:text-accent-foreground transition-colors"
       aria-label={`Switch to ${theme === 'light' ? 'dark' : 'light'} theme`}
     >
-      <FontAwesomeIcon 
-        icon={theme === 'light' ? faMoon : faSun} 
-        className="w-4 h-4 transition-transform duration-300 hover:scale-110" 
+      <FontAwesomeIcon
+        icon={theme === 'light' ? faMoon : faSun}
+        className="w-4 h-4 transition-transform duration-300 hover:scale-110"
       />
     </Button>
   );

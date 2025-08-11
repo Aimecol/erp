@@ -5,6 +5,7 @@ import './landing.css';
 import Link from 'next/link';
 import { motion, useScroll, useTransform, useInView } from 'framer-motion';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { useTheme } from '@/components/ui/theme-toggle';
 import {
   faArrowRight,
   faChartBar,
@@ -160,57 +161,131 @@ export default function LandingPage() {
   const { scrollYProgress } = useScroll();
   const y = useTransform(scrollYProgress, [0, 1], ['0%', '50%']);
   const opacity = useTransform(scrollYProgress, [0, 0.5], [1, 0]);
+  const { theme } = useTheme();
 
-  const features = [
-    {
-      icon: faChartBar,
-      title: "Comprehensive Dashboard",
-      description: "12 KPI cards and 5 interactive charts providing real-time insights into institutional performance with beautiful visualizations."
+  // Theme-aware features
+  const getFeatures = () => {
+    const baseFeatures = [
+      {
+        icon: faChartBar,
+        title: theme === 'light' ? "Comprehensive Dashboard" : "AI-Powered Analytics",
+        description: theme === 'light'
+          ? "12 KPI cards and 5 interactive charts providing real-time insights into institutional performance with beautiful visualizations."
+          : "Advanced machine learning algorithms analyze institutional data to provide predictive insights and automated recommendations."
+      },
+      {
+        icon: faDollarSign,
+        title: theme === 'light' ? "Financial Management (RWF)" : "Smart Financial Operations",
+        description: theme === 'light'
+          ? "Complete financial operations in Rwandan Francs including fee collection, budgeting, accounting, and compliance reporting."
+          : "AI-driven financial forecasting and automated transaction processing with blockchain-secured RWF operations."
+      },
+      {
+        icon: faGraduationCap,
+        title: theme === 'light' ? "Academic Administration" : "Intelligent Academic System",
+        description: theme === 'light'
+          ? "Student enrollment, program management, performance tracking, and academic calendar with comprehensive reporting."
+          : "Machine learning-powered student success prediction, automated scheduling, and personalized learning path recommendations."
+      },
+      {
+        icon: faUsers,
+        title: theme === 'light' ? "Human Resources" : "Digital Workforce Management",
+        description: theme === 'light'
+          ? "Staff management, payroll processing, benefits administration, and performance tracking for institutional excellence."
+          : "AI-enhanced talent management with predictive performance analytics and automated workflow optimization."
+      },
+      {
+        icon: faShield,
+        title: theme === 'light' ? "Role-Based Security" : "Advanced Cybersecurity",
+        description: theme === 'light'
+          ? "Advanced permission system with roles for Admin, Bursar, Store Manager, Academic Staff, and Auditor access control."
+          : "Zero-trust security architecture with biometric authentication, behavioral analysis, and quantum-encrypted data protection."
+      },
+      {
+        icon: faGlobe,
+        title: theme === 'light' ? "Rwandan Localization" : "Global Digital Integration",
+        description: theme === 'light'
+          ? "Built specifically for Rwanda with RWF currency, Africa/Kigali timezone, and local compliance requirements."
+          : "Seamless integration with global educational networks while maintaining local compliance and cultural adaptation."
+      }
+    ];
+    return baseFeatures;
+  };
+
+  const features = getFeatures();
+
+  // Theme-aware content
+  const themeContent = {
+    light: {
+      hero: {
+        badge: "Institut d'Enseignement Supérieur de Ruhengeri",
+        title: "INES-Ruhengeri ERP System",
+        description: "A comprehensive, production-ready ERP system designed specifically for Rwanda's leading higher education institution. Manage academics, finances, HR, and operations with beautiful dashboards and RWF currency support.",
+        primaryCTA: "Access Dashboard",
+        secondaryCTA: "Watch Demo"
+      },
+      stats: [
+        { number: "1,518", label: "Active Students", icon: faUsers },
+        { number: "24", label: "Academic Programs", icon: faBookOpen },
+        { number: "192M", label: "RWF Collections", icon: faDollarSign },
+        { number: "94.5%", label: "Success Rate", icon: faArrowTrendUp }
+      ],
+      features: {
+        title: "Powerful Features for Educational Excellence",
+        subtitle: "Everything you need to manage a modern higher education institution, built with cutting-edge technology and designed for the Rwandan context."
+      },
+      demo: {
+        title: "See It In Action",
+        subtitle: "Watch how INES-Ruhengeri ERP transforms institutional management with intuitive dashboards and powerful features."
+      }
     },
-    {
-      icon: faDollarSign,
-      title: "Financial Management (RWF)",
-      description: "Complete financial operations in Rwandan Francs including fee collection, budgeting, accounting, and compliance reporting."
-    },
-    {
-      icon: faGraduationCap,
-      title: "Academic Administration",
-      description: "Student enrollment, program management, performance tracking, and academic calendar with comprehensive reporting."
-    },
-    {
-      icon: faUsers,
-      title: "Human Resources",
-      description: "Staff management, payroll processing, benefits administration, and performance tracking for institutional excellence."
-    },
-    {
-      icon: faShield,
-      title: "Role-Based Security",
-      description: "Advanced permission system with roles for Admin, Bursar, Store Manager, Academic Staff, and Auditor access control."
-    },
-    {
-      icon: faGlobe,
-      title: "Rwandan Localization",
-      description: "Built specifically for Rwanda with RWF currency, Africa/Kigali timezone, and local compliance requirements."
+    dark: {
+      hero: {
+        badge: "Advanced Digital Campus Solution",
+        title: "INES-Ruhengeri Digital Campus",
+        description: "Experience the future of educational management with our cutting-edge ERP platform. Powered by advanced analytics, AI-driven insights, and seamless integration for Rwanda's premier institution.",
+        primaryCTA: "Enter Platform",
+        secondaryCTA: "Explore Features"
+      },
+      stats: [
+        { number: "1,518", label: "Digital Students", icon: faUsers },
+        { number: "24", label: "Smart Programs", icon: faBookOpen },
+        { number: "192M", label: "Digital Revenue", icon: faDollarSign },
+        { number: "94.5%", label: "AI Efficiency", icon: faArrowTrendUp }
+      ],
+      features: {
+        title: "Advanced Technology for Digital Excellence",
+        subtitle: "Cutting-edge solutions powered by AI and machine learning, designed for the digital transformation of higher education in Rwanda."
+      },
+      demo: {
+        title: "Experience the Future",
+        subtitle: "Discover how our AI-powered platform revolutionizes educational management with intelligent automation and predictive analytics."
+      }
     }
-  ];
+  };
 
-  const stats = [
-    { number: "1,518", label: "Active Students", icon: faUsers },
-    { number: "24", label: "Academic Programs", icon: faBookOpen },
-    { number: "192M", label: "RWF Collections", icon: faDollarSign },
-    { number: "94.5%", label: "Success Rate", icon: faArrowTrendUp }
-  ];
+  const currentContent = themeContent[theme] || themeContent.light;
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 dark:from-gray-900 dark:via-gray-800 dark:to-blue-900 overflow-hidden">
+    <div className={`min-h-screen overflow-hidden transition-all duration-1000 ${
+      theme === 'light'
+        ? 'bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100'
+        : 'bg-gradient-to-br from-gray-900 via-purple-900 to-cyan-900'
+    }`}>
       {/* Navigation */}
       <LandingNavigation />
       {/* Hero Section */}
       <section className="relative min-h-[85vh] flex items-center justify-center px-4 py-12">
         <motion.div style={{ y, opacity }} className="absolute inset-0 z-0">
-          <div className="absolute top-16 left-16 w-56 h-56 bg-blue-300 dark:bg-blue-600 rounded-full mix-blend-multiply filter blur-xl opacity-70 dark:opacity-30 animate-blob"></div>
-          <div className="absolute top-32 right-16 w-56 h-56 bg-purple-300 dark:bg-purple-600 rounded-full mix-blend-multiply filter blur-xl opacity-70 dark:opacity-30 animate-blob animation-delay-2000"></div>
-          <div className="absolute bottom-16 left-32 w-56 h-56 bg-pink-300 dark:bg-pink-600 rounded-full mix-blend-multiply filter blur-xl opacity-70 dark:opacity-30 animate-blob animation-delay-4000"></div>
+          <div className={`absolute top-16 left-16 w-56 h-56 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob transition-all duration-1000 ${
+            theme === 'light' ? 'bg-blue-300' : 'bg-cyan-400 dark:opacity-40'
+          }`}></div>
+          <div className={`absolute top-32 right-16 w-56 h-56 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob animation-delay-2000 transition-all duration-1000 ${
+            theme === 'light' ? 'bg-purple-300' : 'bg-purple-400 dark:opacity-40'
+          }`}></div>
+          <div className={`absolute bottom-16 left-32 w-56 h-56 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob animation-delay-4000 transition-all duration-1000 ${
+            theme === 'light' ? 'bg-pink-300' : 'bg-pink-400 dark:opacity-40'
+          }`}></div>
         </motion.div>
 
         <div className="relative z-10 max-w-6xl mx-auto grid lg:grid-cols-2 gap-8 lg:gap-12 items-center">
@@ -228,7 +303,7 @@ export default function LandingPage() {
               className="inline-flex items-center px-3 py-1.5 bg-blue-100 dark:bg-blue-900/50 text-blue-800 dark:text-blue-200 rounded-full text-sm font-medium mb-4"
             >
               <FontAwesomeIcon icon={faAward} className="w-3 h-3 mr-2" />
-              Institut d'Enseignement Supérieur de Ruhengeri
+              {currentContent.hero.badge}
             </motion.div>
 
             <motion.h1
@@ -237,10 +312,21 @@ export default function LandingPage() {
               transition={{ delay: 0.3 }}
               className="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-bold text-gray-900 dark:text-white mb-4 leading-tight"
             >
-              INES-Ruhengeri
-              <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent block">
-                ERP System
-              </span>
+              {theme === 'light' ? (
+                <>
+                  INES-Ruhengeri
+                  <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent block">
+                    ERP System
+                  </span>
+                </>
+              ) : (
+                <>
+                  INES-Ruhengeri
+                  <span className="bg-gradient-to-r from-cyan-400 to-purple-400 bg-clip-text text-transparent block">
+                    Digital Campus
+                  </span>
+                </>
+              )}
             </motion.h1>
 
             <motion.p
@@ -249,8 +335,7 @@ export default function LandingPage() {
               transition={{ delay: 0.4 }}
               className="text-lg text-gray-600 dark:text-gray-300 mb-6 leading-relaxed max-w-2xl"
             >
-              A comprehensive, production-ready ERP system designed specifically for Rwanda's leading higher education institution.
-              Manage academics, finances, HR, and operations with beautiful dashboards and RWF currency support.
+              {currentContent.hero.description}
             </motion.p>
 
             <motion.div
@@ -260,14 +345,17 @@ export default function LandingPage() {
               className="flex flex-col sm:flex-row gap-3 justify-center lg:justify-start"
             >
               <Link href="/login">
-                <Button size="lg" className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white px-6 py-3 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 group">
-                  Access Dashboard
+                <Button size="lg" className={`${theme === 'light'
+                  ? 'bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700'
+                  : 'bg-gradient-to-r from-cyan-500 to-purple-500 hover:from-cyan-600 hover:to-purple-600'
+                } text-white px-6 py-3 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 group`}>
+                  {currentContent.hero.primaryCTA}
                   <FontAwesomeIcon icon={faArrowRight} className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" />
                 </Button>
               </Link>
               <Button variant="outline" size="lg" className="px-6 py-3 rounded-xl border-2 hover:bg-gray-50 dark:hover:bg-gray-800 transition-all duration-300 group">
                 <FontAwesomeIcon icon={faPlay} className="mr-2 w-4 h-4" />
-                Watch Demo
+                {currentContent.hero.secondaryCTA}
               </Button>
             </motion.div>
           </motion.div>
@@ -288,7 +376,7 @@ export default function LandingPage() {
       <section className="py-12 bg-white/50 dark:bg-gray-900/50 backdrop-blur-sm">
         <div className="max-w-5xl mx-auto px-4">
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
-            {stats.map((stat, index) => (
+            {currentContent.stats.map((stat: any, index: number) => (
               <motion.div
                 key={index}
                 initial={{ opacity: 0, y: 30 }}
@@ -318,10 +406,10 @@ export default function LandingPage() {
             className="text-center mb-8"
           >
             <h2 className="text-3xl lg:text-4xl font-bold text-gray-900 dark:text-white mb-4">
-              See It In Action
+              {currentContent.demo.title}
             </h2>
             <p className="text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
-              Watch how INES-Ruhengeri ERP transforms institutional management with intuitive dashboards and powerful features.
+              {currentContent.demo.subtitle}
             </p>
           </motion.div>
 
@@ -370,14 +458,24 @@ export default function LandingPage() {
             className="text-center mb-12"
           >
             <h2 className="text-3xl lg:text-4xl font-bold text-gray-900 dark:text-white mb-4">
-              Powerful Features for
-              <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent block">
-                Educational Excellence
-              </span>
+              {theme === 'light' ? (
+                <>
+                  Powerful Features for
+                  <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent block">
+                    Educational Excellence
+                  </span>
+                </>
+              ) : (
+                <>
+                  Advanced Technology for
+                  <span className="bg-gradient-to-r from-cyan-400 to-purple-400 bg-clip-text text-transparent block">
+                    Digital Excellence
+                  </span>
+                </>
+              )}
             </h2>
             <p className="text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
-              Everything you need to manage a modern higher education institution,
-              built with cutting-edge technology and designed for the Rwandan context.
+              {currentContent.features.subtitle}
             </p>
           </motion.div>
 
@@ -399,7 +497,9 @@ export default function LandingPage() {
       <InteractiveDemo />
 
       {/* Testimonials Section */}
-      <section className="py-20 bg-gray-50">
+      <section className={`py-20 transition-all duration-1000 ${
+        theme === 'light' ? 'bg-gray-50' : 'bg-gray-800'
+      }`}>
         <div className="max-w-7xl mx-auto px-4">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
@@ -407,11 +507,14 @@ export default function LandingPage() {
             viewport={{ once: true }}
             className="text-center mb-16"
           >
-            <h2 className="text-4xl lg:text-5xl font-bold text-gray-900 mb-6">
-              Trusted by Educational Leaders
+            <h2 className="text-4xl lg:text-5xl font-bold text-gray-900 dark:text-white mb-6">
+              {theme === 'light' ? 'Trusted by Educational Leaders' : 'Pioneering Digital Transformation'}
             </h2>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              See what administrators and staff say about our ERP system.
+            <p className="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
+              {theme === 'light'
+                ? 'See what administrators and staff say about our ERP system.'
+                : 'Leading institutions share their digital transformation journey with our AI-powered platform.'
+              }
             </p>
           </motion.div>
 
