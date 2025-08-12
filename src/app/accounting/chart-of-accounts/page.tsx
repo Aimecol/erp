@@ -13,7 +13,7 @@ import { Badge } from '@/components/ui/badge';
 import { DataTable } from '@/components/data-table/data-table';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { api } from '@/lib/api';
-import { ChartOfAccounts } from '@/types';
+import { ChartOfAccounts, ApiResponse } from '@/types';
 import { formatCurrency, formatDate } from '@/lib/utils';
 
 export default function ChartOfAccountsPage() {
@@ -41,18 +41,16 @@ export default function ChartOfAccountsPage() {
       type: selectedType, 
       status: selectedStatus 
     }],
-    queryFn: () => api.get('/v1/accounting/chart-of-accounts', {
-      params: {
-        search: searchTerm,
-        type: selectedType !== 'all' ? selectedType : undefined,
-        status: selectedStatus !== 'all' ? selectedStatus : undefined,
-      }
+    queryFn: () => api.get<ApiResponse<ChartOfAccounts[]>>('/v1/accounting/chart-of-accounts', {
+      search: searchTerm,
+      type: selectedType !== 'all' ? selectedType : undefined,
+      status: selectedStatus !== 'all' ? selectedStatus : undefined,
     }),
   });
 
   const { data: accountStats } = useQuery({
     queryKey: ['accounting', 'chart-of-accounts-stats'],
-    queryFn: () => api.get('/v1/accounting/chart-of-accounts/stats'),
+    queryFn: () => api.get<ApiResponse<any>>('/v1/accounting/chart-of-accounts/stats'),
   });
 
   const accounts = accountsData?.data || [];
@@ -324,8 +322,6 @@ export default function ChartOfAccountsPage() {
                 columns={columns}
                 data={accounts}
                 loading={isLoading}
-                searchable={false}
-                filterable={false}
               />
             </CardContent>
           </Card>
