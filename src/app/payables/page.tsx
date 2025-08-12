@@ -2,7 +2,11 @@
 
 import React from 'react';
 import { useQuery } from '@tanstack/react-query';
-import { Plus, Search, Filter, Download, Eye, DollarSign, AlertTriangle, Calendar, CheckCircle } from 'lucide-react';
+import {
+  Plus, Search, Filter, Download, Eye, DollarSign, AlertTriangle, Calendar,
+  CheckCircle, Clock, Users, TrendingUp, BarChart3, PieChart, CreditCard,
+  Receipt, Mail, Phone, FileText, Target, Activity
+} from 'lucide-react';
 import { MainLayout } from '@/components/layout/main-layout';
 import { ProtectedRoute } from '@/components/auth/auth-provider';
 import { usePermissions } from '@/components/auth/permission-guard';
@@ -12,16 +16,20 @@ import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
 import { DataTable } from '@/components/data-table/data-table';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Progress } from '@/components/ui/progress';
 import { api } from '@/lib/api';
 import { AccountsPayable } from '@/types';
 import { formatCurrency, formatDate } from '@/lib/utils';
 
 export default function AccountsPayablePage() {
-  const { canRead, canCreate, canUpdate, isBursar, isAdmin } = usePermissions();
+  const { canRead, canCreate, canUpdate, canApprove, isBursar, isAdmin } = usePermissions();
   const [searchTerm, setSearchTerm] = React.useState('');
   const [selectedStatus, setSelectedStatus] = React.useState('all');
   const [selectedVendor, setSelectedVendor] = React.useState('all');
   const [ageingPeriod, setAgeingPeriod] = React.useState('all');
+  const [selectedCustomer, setSelectedCustomer] = React.useState('all');
+  const [selectedPeriod, setSelectedPeriod] = React.useState('current_month');
 
   // Check permissions
   if (!canRead('payables')) {
@@ -58,8 +66,139 @@ export default function AccountsPayablePage() {
     queryFn: () => api.get('/v1/payables/dashboard-stats'),
   });
 
+  const { data: receivablesData, isLoading: receivablesLoading } = useQuery({
+    queryKey: ['receivables', 'list', { customer: selectedCustomer, status: selectedStatus }],
+    queryFn: () => api.get('/v1/receivables', {
+      params: {
+        customer: selectedCustomer !== 'all' ? selectedCustomer : undefined,
+        status: selectedStatus !== 'all' ? selectedStatus : undefined,
+      }
+    }),
+  });
+
+  const { data: agingData, isLoading: agingLoading } = useQuery({
+    queryKey: ['aging-analysis', selectedPeriod],
+    queryFn: () => api.get('/v1/aging-analysis', {
+      params: { period: selectedPeriod }
+    }),
+  });
+
+  const { data: paymentsData, isLoading: paymentsLoading } = useQuery({
+    queryKey: ['customer-payments', selectedPeriod],
+    queryFn: () => api.get('/v1/customer-payments', {
+      params: { period: selectedPeriod }
+    }),
+  });
+
   const payables = payablesData?.data || [];
   const stats = payablesStats?.data || {};
+  const receivables = receivablesData?.data || [];
+  const aging = agingData?.data || [];
+  const payments = paymentsData?.data || [];
+
+  // Mock receivables data
+  const mockReceivables = [
+    {
+      id: 'ar-001',
+      customerName: 'Ministry of Education',
+      customerEmail: 'finance@mineduc.gov.rw',
+      invoiceNumber: 'INV-2024-001',
+      amount: 15000000,
+      dueDate: new Date('2024-02-15'),
+      issueDate: new Date('2024-01-15'),
+      status: 'outstanding',
+      daysOverdue: 5,
+      category: 'Training Services',
+      description: 'Professional development training program',
+      paymentTerms: 'Net 30'
+    },
+    {
+      id: 'ar-002',
+      customerName: 'Rwanda Development Board',
+      customerEmail: 'procurement@rdb.rw',
+      invoiceNumber: 'INV-2024-002',
+      amount: 8500000,
+      dueDate: new Date('2024-02-20'),
+      issueDate: new Date('2024-01-20'),
+      status: 'paid',
+      daysOverdue: 0,
+      category: 'Consultancy',
+      description: 'Business development consultancy',
+      paymentTerms: 'Net 30'
+    },
+    {
+      id: 'ar-003',
+      customerName: 'Private Sector Federation',
+      customerEmail: 'finance@psf.org.rw',
+      invoiceNumber: 'INV-2024-003',
+      amount: 12000000,
+      dueDate: new Date('2024-03-01'),
+      issueDate: new Date('2024-02-01'),
+      status: 'outstanding',
+      daysOverdue: 0,
+      category: 'Research Services',
+      description: 'Market research and analysis',
+      paymentTerms: 'Net 30'
+    }
+  ];
+
+  // Mock aging analysis data
+  const mockAgingAnalysis = [
+    {
+      id: 'age-001',
+      customerName: 'Ministry of Education',
+      current: 5000000,
+      days30: 8000000,
+      days60: 2000000,
+      days90: 0,
+      over90: 0,
+      total: 15000000
+    },
+    {
+      id: 'age-002',
+      customerName: 'Private Sector Federation',
+      current: 12000000,
+      days30: 0,
+      days60: 0,
+      days90: 0,
+      over90: 0,
+      total: 12000000
+    },
+    {
+      id: 'age-003',
+      customerName: 'University of Rwanda',
+      current: 0,
+      days30: 3500000,
+      days60: 1500000,
+      days90: 2000000,
+      over90: 1000000,
+      total: 8000000
+    }
+  ];
+
+  // Mock customer payments data
+  const mockCustomerPayments = [
+    {
+      id: 'pay-001',
+      customerName: 'Rwanda Development Board',
+      paymentDate: new Date('2024-02-18'),
+      amount: 8500000,
+      paymentMethod: 'Bank Transfer',
+      reference: 'TXN-2024-001',
+      invoiceNumber: 'INV-2024-002',
+      status: 'cleared'
+    },
+    {
+      id: 'pay-002',
+      customerName: 'Ministry of Health',
+      paymentDate: new Date('2024-02-15'),
+      amount: 6200000,
+      paymentMethod: 'Check',
+      reference: 'CHK-2024-001',
+      invoiceNumber: 'INV-2024-004',
+      status: 'pending'
+    }
+  ];
 
   const getStatusBadge = (status: string) => {
     const variants: Record<string, any> = {
@@ -78,6 +217,196 @@ export default function AccountsPayablePage() {
     if (daysOverdue <= 60) return 'destructive';
     return 'destructive';
   };
+
+  const receivablesColumns = [
+    {
+      accessorKey: 'invoiceNumber',
+      header: 'Invoice #',
+      cell: ({ row }: any) => (
+        <div className="font-medium">{row.original.invoiceNumber}</div>
+      ),
+    },
+    {
+      accessorKey: 'customerName',
+      header: 'Customer',
+      cell: ({ row }: any) => (
+        <div>
+          <div className="font-medium">{row.original.customerName}</div>
+          <div className="text-sm text-muted-foreground">{row.original.customerEmail}</div>
+        </div>
+      ),
+    },
+    {
+      accessorKey: 'description',
+      header: 'Description',
+      cell: ({ row }: any) => (
+        <div>
+          <div className="font-medium">{row.original.description}</div>
+          <div className="text-sm text-muted-foreground">{row.original.category}</div>
+        </div>
+      ),
+    },
+    {
+      accessorKey: 'amount',
+      header: 'Amount',
+      cell: ({ row }: any) => (
+        <div className="font-medium text-green-600">
+          {formatCurrency(row.original.amount)}
+        </div>
+      ),
+    },
+    {
+      accessorKey: 'dueDate',
+      header: 'Due Date',
+      cell: ({ row }: any) => {
+        const isOverdue = row.original.daysOverdue > 0;
+        return (
+          <div className={isOverdue ? 'text-red-600 font-medium' : ''}>
+            {formatDate(row.original.dueDate)}
+            {isOverdue && <div className="text-xs">({row.original.daysOverdue} days overdue)</div>}
+          </div>
+        );
+      },
+    },
+    {
+      accessorKey: 'status',
+      header: 'Status',
+      cell: ({ row }: any) => {
+        const status = row.original.status;
+        const variant = status === 'paid' ? 'default' :
+                      status === 'outstanding' ? 'destructive' :
+                      status === 'partial' ? 'secondary' : 'outline';
+        return <Badge variant={variant}>{status}</Badge>;
+      },
+    },
+    {
+      id: 'actions',
+      header: 'Actions',
+      cell: ({ row }: any) => (
+        <div className="flex items-center gap-2">
+          <Button variant="ghost" size="sm">
+            <Eye className="h-4 w-4" />
+          </Button>
+          <Button variant="ghost" size="sm">
+            <Mail className="h-4 w-4" />
+          </Button>
+          <Button variant="ghost" size="sm">
+            <CreditCard className="h-4 w-4" />
+          </Button>
+        </div>
+      ),
+    },
+  ];
+
+  const agingColumns = [
+    {
+      accessorKey: 'customerName',
+      header: 'Customer',
+      cell: ({ row }: any) => (
+        <div className="font-medium">{row.original.customerName}</div>
+      ),
+    },
+    {
+      accessorKey: 'current',
+      header: 'Current',
+      cell: ({ row }: any) => (
+        <div className="font-medium text-green-600">
+          {formatCurrency(row.original.current)}
+        </div>
+      ),
+    },
+    {
+      accessorKey: 'days30',
+      header: '1-30 Days',
+      cell: ({ row }: any) => (
+        <div className="font-medium text-yellow-600">
+          {formatCurrency(row.original.days30)}
+        </div>
+      ),
+    },
+    {
+      accessorKey: 'days60',
+      header: '31-60 Days',
+      cell: ({ row }: any) => (
+        <div className="font-medium text-orange-600">
+          {formatCurrency(row.original.days60)}
+        </div>
+      ),
+    },
+    {
+      accessorKey: 'days90',
+      header: '61-90 Days',
+      cell: ({ row }: any) => (
+        <div className="font-medium text-red-600">
+          {formatCurrency(row.original.days90)}
+        </div>
+      ),
+    },
+    {
+      accessorKey: 'over90',
+      header: '90+ Days',
+      cell: ({ row }: any) => (
+        <div className="font-medium text-red-800">
+          {formatCurrency(row.original.over90)}
+        </div>
+      ),
+    },
+    {
+      accessorKey: 'total',
+      header: 'Total',
+      cell: ({ row }: any) => (
+        <div className="font-bold">
+          {formatCurrency(row.original.total)}
+        </div>
+      ),
+    },
+  ];
+
+  const paymentsColumns = [
+    {
+      accessorKey: 'customerName',
+      header: 'Customer',
+      cell: ({ row }: any) => (
+        <div className="font-medium">{row.original.customerName}</div>
+      ),
+    },
+    {
+      accessorKey: 'paymentDate',
+      header: 'Payment Date',
+      cell: ({ row }: any) => (
+        <div className="text-sm">{formatDate(row.original.paymentDate)}</div>
+      ),
+    },
+    {
+      accessorKey: 'amount',
+      header: 'Amount',
+      cell: ({ row }: any) => (
+        <div className="font-medium text-green-600">
+          {formatCurrency(row.original.amount)}
+        </div>
+      ),
+    },
+    {
+      accessorKey: 'paymentMethod',
+      header: 'Method',
+      cell: ({ row }: any) => (
+        <div>
+          <div className="font-medium">{row.original.paymentMethod}</div>
+          <div className="text-sm text-muted-foreground">{row.original.reference}</div>
+        </div>
+      ),
+    },
+    {
+      accessorKey: 'status',
+      header: 'Status',
+      cell: ({ row }: any) => {
+        const status = row.original.status;
+        const variant = status === 'cleared' ? 'default' :
+                      status === 'pending' ? 'secondary' : 'outline';
+        return <Badge variant={variant}>{status}</Badge>;
+      },
+    },
+  ];
 
   const columns = [
     {
@@ -195,9 +524,9 @@ export default function AccountsPayablePage() {
           {/* Page Header */}
           <div className="flex items-center justify-between">
             <div>
-              <h1 className="text-3xl font-bold tracking-tight">Accounts Payable</h1>
+              <h1 className="text-3xl font-bold tracking-tight">Accounts Payable & Receivable</h1>
               <p className="text-muted-foreground">
-                Manage vendor invoices, payments, and outstanding balances
+                Manage vendor invoices, customer receivables, payments, and aging analysis
               </p>
             </div>
             {canCreate('payables') && (
@@ -346,6 +675,228 @@ export default function AccountsPayablePage() {
               />
             </CardContent>
           </Card>
+
+          <Tabs defaultValue="receivables" className="space-y-6">
+            <TabsList>
+              <TabsTrigger value="receivables">Accounts Receivable</TabsTrigger>
+              <TabsTrigger value="aging">Aging Analysis</TabsTrigger>
+              <TabsTrigger value="payments">Customer Payments</TabsTrigger>
+            </TabsList>
+
+            <TabsContent value="receivables" className="space-y-6">
+              {/* Receivables Summary */}
+              <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+                <Card>
+                  <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                    <CardTitle className="text-sm font-medium">Total Receivables</CardTitle>
+                    <Receipt className="h-4 w-4 text-blue-500" />
+                  </CardHeader>
+                  <CardContent>
+                    <div className="text-2xl font-bold text-blue-600">
+                      {formatCurrency(35500000)}
+                    </div>
+                    <p className="text-xs text-muted-foreground">
+                      Outstanding invoices
+                    </p>
+                  </CardContent>
+                </Card>
+
+                <Card>
+                  <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                    <CardTitle className="text-sm font-medium">Overdue Amount</CardTitle>
+                    <AlertTriangle className="h-4 w-4 text-red-500" />
+                  </CardHeader>
+                  <CardContent>
+                    <div className="text-2xl font-bold text-red-600">
+                      {formatCurrency(15000000)}
+                    </div>
+                    <p className="text-xs text-muted-foreground">
+                      1 customer overdue
+                    </p>
+                  </CardContent>
+                </Card>
+
+                <Card>
+                  <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                    <CardTitle className="text-sm font-medium">This Month Collections</CardTitle>
+                    <CheckCircle className="h-4 w-4 text-green-500" />
+                  </CardHeader>
+                  <CardContent>
+                    <div className="text-2xl font-bold text-green-600">
+                      {formatCurrency(8500000)}
+                    </div>
+                    <p className="text-xs text-muted-foreground">
+                      1 payment received
+                    </p>
+                  </CardContent>
+                </Card>
+
+                <Card>
+                  <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                    <CardTitle className="text-sm font-medium">Average Days to Pay</CardTitle>
+                    <Clock className="h-4 w-4 text-orange-500" />
+                  </CardHeader>
+                  <CardContent>
+                    <div className="text-2xl font-bold text-orange-600">28</div>
+                    <p className="text-xs text-muted-foreground">
+                      Days average
+                    </p>
+                  </CardContent>
+                </Card>
+              </div>
+
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <Users className="h-5 w-5" />
+                    Accounts Receivable
+                  </CardTitle>
+                  <CardDescription>
+                    Track customer invoices and payment collection
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <div className="flex items-center gap-4 mb-4">
+                    <div className="flex-1">
+                      <div className="relative">
+                        <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                        <Input
+                          placeholder="Search receivables..."
+                          className="pl-10"
+                        />
+                      </div>
+                    </div>
+                    <Select value={selectedCustomer} onValueChange={setSelectedCustomer}>
+                      <SelectTrigger className="w-48">
+                        <SelectValue placeholder="Customer" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="all">All Customers</SelectItem>
+                        <SelectItem value="mineduc">Ministry of Education</SelectItem>
+                        <SelectItem value="rdb">Rwanda Development Board</SelectItem>
+                        <SelectItem value="psf">Private Sector Federation</SelectItem>
+                      </SelectContent>
+                    </Select>
+                    <Select value={selectedStatus} onValueChange={setSelectedStatus}>
+                      <SelectTrigger className="w-32">
+                        <SelectValue placeholder="Status" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="all">All Status</SelectItem>
+                        <SelectItem value="outstanding">Outstanding</SelectItem>
+                        <SelectItem value="paid">Paid</SelectItem>
+                        <SelectItem value="partial">Partial</SelectItem>
+                      </SelectContent>
+                    </Select>
+                    {canCreate('payables') && (
+                      <Button>
+                        <Plus className="h-4 w-4 mr-2" />
+                        New Invoice
+                      </Button>
+                    )}
+                  </div>
+
+                  <DataTable
+                    columns={receivablesColumns}
+                    data={mockReceivables}
+                    loading={receivablesLoading}
+                    searchable={false}
+                    filterable={false}
+                  />
+                </CardContent>
+              </Card>
+            </TabsContent>
+
+            <TabsContent value="aging" className="space-y-6">
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <BarChart3 className="h-5 w-5" />
+                    Aging Analysis Report
+                  </CardTitle>
+                  <CardDescription>
+                    Analyze outstanding receivables by aging periods
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <div className="mb-6">
+                    <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-5">
+                      <div className="text-center p-4 border rounded-lg">
+                        <div className="text-2xl font-bold text-green-600">{formatCurrency(17000000)}</div>
+                        <div className="text-sm text-muted-foreground">Current</div>
+                      </div>
+                      <div className="text-center p-4 border rounded-lg">
+                        <div className="text-2xl font-bold text-yellow-600">{formatCurrency(8000000)}</div>
+                        <div className="text-sm text-muted-foreground">1-30 Days</div>
+                      </div>
+                      <div className="text-center p-4 border rounded-lg">
+                        <div className="text-2xl font-bold text-orange-600">{formatCurrency(3500000)}</div>
+                        <div className="text-sm text-muted-foreground">31-60 Days</div>
+                      </div>
+                      <div className="text-center p-4 border rounded-lg">
+                        <div className="text-2xl font-bold text-red-600">{formatCurrency(2000000)}</div>
+                        <div className="text-sm text-muted-foreground">61-90 Days</div>
+                      </div>
+                      <div className="text-center p-4 border rounded-lg">
+                        <div className="text-2xl font-bold text-red-800">{formatCurrency(1000000)}</div>
+                        <div className="text-sm text-muted-foreground">90+ Days</div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <DataTable
+                    columns={agingColumns}
+                    data={mockAgingAnalysis}
+                    loading={agingLoading}
+                    searchable={false}
+                    filterable={false}
+                  />
+                </CardContent>
+              </Card>
+            </TabsContent>
+
+            <TabsContent value="payments" className="space-y-6">
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <CreditCard className="h-5 w-5" />
+                    Customer Payments
+                  </CardTitle>
+                  <CardDescription>
+                    Track and manage customer payment receipts
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <div className="flex items-center gap-4 mb-4">
+                    <Select value={selectedPeriod} onValueChange={setSelectedPeriod}>
+                      <SelectTrigger className="w-40">
+                        <SelectValue placeholder="Period" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="current_month">Current Month</SelectItem>
+                        <SelectItem value="last_month">Last Month</SelectItem>
+                        <SelectItem value="current_quarter">Current Quarter</SelectItem>
+                      </SelectContent>
+                    </Select>
+                    {canCreate('payables') && (
+                      <Button>
+                        <Plus className="h-4 w-4 mr-2" />
+                        Record Payment
+                      </Button>
+                    )}
+                  </div>
+
+                  <DataTable
+                    columns={paymentsColumns}
+                    data={mockCustomerPayments}
+                    loading={paymentsLoading}
+                    searchable={false}
+                    filterable={false}
+                  />
+                </CardContent>
+              </Card>
+            </TabsContent>
+          </Tabs>
         </div>
       </MainLayout>
     </ProtectedRoute>

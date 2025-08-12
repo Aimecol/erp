@@ -8,6 +8,7 @@ import { ReactQueryProvider } from '@/lib/react-query';
 import { AuthProvider } from '@/components/auth/auth-provider';
 import { ThemeProvider } from '@/components/theme/theme-provider';
 import { MSWProvider } from './mocks';
+import { AccountingProvider } from '@/contexts/accounting-context';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -42,7 +43,9 @@ export default function RootLayout({
           <MSWProvider>
             <ReactQueryProvider>
               <AuthProvider>
-                {children}
+                <AccountingProvider>
+                  {children}
+                </AccountingProvider>
               </AuthProvider>
             </ReactQueryProvider>
           </MSWProvider>
